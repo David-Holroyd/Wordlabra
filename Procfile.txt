@@ -1,1 +1,2 @@
-web: gunicorn Wordlabra:app --log-file -
+web: Wordlabra.py
+worker: Wordlabra.py
