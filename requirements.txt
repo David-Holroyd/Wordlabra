@@ -30,4 +30,5 @@ twilio==6.61.0
 urllib3==1.26.6
 virtualenv==20.7.2
 Werkzeug==2.0.2
+wincertstore==0.2
 yarg==0.1.9
