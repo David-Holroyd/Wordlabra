@@ -10,20 +10,21 @@ app.secret_key = "wordlabra"
 
 # This reads the words/palabras off an excel file and makes a list containing all possible answers
 def start_game():
-    cur_dir = os.path.dirname(__file__)
-    filepath = os.path.join(cur_dir, "spanglish.csv")
-    with open(filepath, newline='') as f:
-        reader = csv.reader(f)
-        all_wordlabras = list(reader)
+#     cur_dir = os.path.dirname(__file__)
+#     filepath = os.path.join(cur_dir, "spanglish.csv")
+#     with open(filepath, newline='') as f:
+#         reader = csv.reader(f)
+#         all_wordlabras = list(reader)
 
-    #  This chooses the uppercase wordlabra answer randomly, then makes a list containing each letter as an element
-    num_wls = len(all_wordlabras)
-    wordlabra_idx = random.randint(0, num_wls - 1)
-    wordlabra = all_wordlabras[wordlabra_idx][0].upper()
-    w_list = []
-    for let in wordlabra:
-        w_list.append(let)
-    return w_list
+#     #  This chooses the uppercase wordlabra answer randomly, then makes a list containing each letter as an element
+#     num_wls = len(all_wordlabras)
+#     wordlabra_idx = random.randint(0, num_wls - 1)
+#     wordlabra = all_wordlabras[wordlabra_idx][0].upper()
+#     w_list = []
+#     for let in wordlabra:
+#         w_list.append(let)
+     w_list = ["L", "I", "S", "T", "O"]
+     return w_list
 
 
 wordlabra_list = start_game()
