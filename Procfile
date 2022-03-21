@@ -1,1 +1,1 @@
-web: gunicorn Wordlabra:app
+web: gunicorn wordlabra:app
