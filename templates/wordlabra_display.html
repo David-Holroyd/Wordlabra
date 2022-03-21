@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>WELCOME TO WORDLABRA</title>
+    </head>
+    <body>
+        <form action="play" method="post">
+            {% for message in get_flashed_messages()%}
+                <p> {{message}} </p>
+            {% endfor %}
+            <br>
+            <input type="text" autofocus name="user_input">
+            <br>
+            <input type="submit" value="PLAY" id="play">
+        </form>
+    </body>
+    </html>
