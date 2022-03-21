@@ -1,1 +1,1 @@
-web: python Wordlabra.py
+web: python Wordlabra:app
