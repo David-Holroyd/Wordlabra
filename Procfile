@@ -1,1 +1,1 @@
-web: python Wordlabra:app
+web: gunicorn Wordlabra:app
