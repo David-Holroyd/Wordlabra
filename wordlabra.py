@@ -1,6 +1,6 @@
 import os
 import random
-import csv
+import pandas as pd
 from flask import Flask, render_template, flash, request, redirect, url_for
 
 rounds = 0
@@ -10,20 +10,16 @@ app.secret_key = "wordlabra"
 
 # This reads the words/palabras off an excel file and makes a list containing all possible answers
 def start_game():
-#     cur_dir = os.path.dirname(__file__)
-#     filepath = os.path.join(cur_dir, "spanglish.csv")
-#     with open(filepath, newline='') as f:
-#         reader = csv.reader(f)
-#         all_wordlabras = list(reader)
+    url = r'https://raw.githubusercontent.com/David-Holroyd/Wordlabra/main/spanglish.csv'
+    all_wordlabras = pd.read_csv(url, encoding='ISO-8859-1')
 
-#     #  This chooses the uppercase wordlabra answer randomly, then makes a list containing each letter as an element
-#     num_wls = len(all_wordlabras)
-#     wordlabra_idx = random.randint(0, num_wls - 1)
-#     wordlabra = all_wordlabras[wordlabra_idx][0].upper()
-#     w_list = []
-#     for let in wordlabra:
-#         w_list.append(let)
-     w_list = ["L", "I", "S", "T", "O"]
+    #  This chooses the uppercase wordlabra answer randomly, then makes a list containing each letter as an element
+    num_wls = len(all_wordlabras)
+    wordlabra_idx = random.randint(0, num_wls - 1)
+    wordlabra = all_wordlabras[wordlabra_idx][0].upper()
+    w_list = []
+    for let in wordlabra:
+        w_list.append(let)
      return w_list
 
 
@@ -121,7 +117,6 @@ def play_wordlabra():
         flash("%s" % " ".join(map(str, alphabet[:10])))
         flash("%s" % " ".join(map(str, alphabet[10:19])))
         flash("%s" % " ".join(map(str, alphabet[19:])))
-        # flash("%s" % ' '.join(map(str, a.letters)))
         return a, g
 
     def play_round(w_a, w_g):
