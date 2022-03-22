@@ -20,7 +20,7 @@ def start_game():
     w_list = []
     for let in wordlabra:
         w_list.append(let)
-     return w_list
+    return w_list
 
 
 wordlabra_list = start_game()
