@@ -11,7 +11,8 @@ app.secret_key = "wordlabra"
 # This reads the words/palabras off an excel file and makes a list containing all possible answers
 def start_game():
     url = r'https://raw.githubusercontent.com/David-Holroyd/Wordlabra/main/spanglish.csv'
-    all_wordlabras = pd.read_csv(url, encoding='ISO-8859-1')
+    df = pd.read_csv(url, encoding='ISO-8859-1')
+    all_wordlabras = df.values.tolist()
 
     #  This chooses the uppercase wordlabra answer randomly, then makes a list containing each letter as an element
     num_wls = len(all_wordlabras)
