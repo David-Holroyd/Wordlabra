@@ -1,9 +1,8 @@
-import os
 import random
 import pandas as pd
-from flask import Flask, render_template, flash, request, redirect, url_for
+from flask import Flask, render_template, flash, request, session
 
-rounds = 0
+rounds = 1
 app = Flask(__name__)
 app.secret_key = "wordlabra"
 
@@ -26,13 +25,22 @@ def start_game():
 
 wordlabra_list = start_game()
 alphabet = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L",
-            "Z", "X", "C", "V", "B", "N", "M"]
+                    "Z", "X", "C", "V", "B", "N", "M"]
 
 
 @app.route("/game")
 def index():
+    session.pop('_flashes', None)
     flash("Try to guess the word in English or Spanish. You have 8 guesses.")
     flash("Please enter your 5 letter guess")
+    if request.method == "GET":
+        global rounds
+        global alphabet
+        global wordlabra_list
+        rounds = 1
+        wordlabra_list = start_game()
+        alphabet = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L",
+                    "Z", "X", "C", "V", "B", "N", "M"]
     return render_template("wordlabra_index.html")
 
 
@@ -118,6 +126,7 @@ def play_wordlabra():
         flash("%s" % " ".join(map(str, alphabet[:10])))
         flash("%s" % " ".join(map(str, alphabet[10:19])))
         flash("%s" % " ".join(map(str, alphabet[19:])))
+        # flash("%s" % ' '.join(map(str, a.letters)))
         return a, g
 
     def play_round(w_a, w_g):
@@ -126,9 +135,11 @@ def play_wordlabra():
         w_a, w_g = check_letters(w_a, w_g)
         if w_g.symbols[0] == "*" and w_g.symbols[1] == "*" and w_g.symbols[2] == "*" and w_g.symbols[3] == "*" and \
                 w_g.symbols[4] == "*":
-            rounds = 1
-            flash("You win!")
+            session.pop("_flashes", None)
+            word = ''.join(wordlabra_list)
+            flash(f"You win! You guessed the word {word} in {rounds-1} guesses.")  
             flash("Return to /game to play again.")
+
         else:
             pass
 
@@ -136,8 +147,6 @@ def play_wordlabra():
     # Coñverts añy español symbols to eñglish :)
     global rounds
     global wordlabra_list
-    if rounds == 0:
-        wordlabra_list = start_game()
     guess_list = guess_word()
     w_guess = GuessWord(letters=guess_list)
     w_answer = Wordlabra(letras=[wordlabra_list[0], wordlabra_list[1], wordlabra_list[2],
@@ -147,11 +156,13 @@ def play_wordlabra():
     # This loops through the later guesses, until user runs out of guesses or wins, getting all letters right in 1 guess
     while not (w_guess.symbols[0] == "*" and w_guess.symbols[1] == "*" and w_guess.symbols[2] == "*"
                and w_guess.symbols[3] == "*" and w_guess.symbols[4] == "*"):
-        if rounds == 8:
+        play_round(w_answer, w_guess)
+        if rounds > 8:
             flash(f"You lose! The correct word was {wordlabra_list}")
             rounds = 1
-            break
-        play_round(w_answer, w_guess)
+            answer = ''.join(wordlabra_list)
+            print(answer)
+            return render_template("wordlabra_loss.html", answer=answer)
         return render_template("wordlabra_display.html")
 
 
