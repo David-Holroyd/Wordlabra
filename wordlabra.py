@@ -75,11 +75,12 @@ def play_wordlabra():
     def guess_word():
         # Allows user to guess 5 letters. Does not have to be a valid word
         global rounds
-        rounds += 1
         flash(f"Please enter guess #{rounds}: ")
         guess_l = []
         if request.method == "POST":
             guessword = request.form.get("user_input")
+            if len(guessword) == 5:
+                rounds += 1
             while len(guessword) != 5:
                 flash(f"Please enter a 5 letter word.")
                 guessword = request.form.get("user_input")
