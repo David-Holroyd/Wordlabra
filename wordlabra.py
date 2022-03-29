@@ -127,7 +127,7 @@ def play_wordlabra():
         flash("%s" % " ".join(map(str, alphabet[:10])))
         flash("%s" % " ".join(map(str, alphabet[10:19])))
         flash("%s" % " ".join(map(str, alphabet[19:])))
-        # flash("%s" % ' '.join(map(str, a.letters)))
+        flash("%s" % ' '.join(map(str, a.letters)))
         return a, g
 
     def play_round(w_a, w_g):
