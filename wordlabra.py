@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.secret_key = "wordlabra"
 
 
-# This reads the words/palabras off an excel file and makes a list containing all possible answers
+# This reads the words/palabras off my github file and makes a list containing all possible answers, choosing one
 def start_game():
     url = r'https://raw.githubusercontent.com/David-Holroyd/Wordlabra/main/spanglish.csv'
     df = pd.read_csv(url, encoding='ISO-8859-1')
@@ -75,12 +75,11 @@ def play_wordlabra():
     def guess_word():
         # Allows user to guess 5 letters. Does not have to be a valid word
         global rounds
+        rounds += 1 
         flash(f"Please enter guess #{rounds}: ")
         guess_l = []
         if request.method == "POST":
             guessword = request.form.get("user_input")
-            if len(guessword) == 5:
-                rounds += 1
             while len(guessword) != 5:
                 flash(f"Please enter a 5 letter word.")
                 guessword = request.form.get("user_input")
@@ -92,10 +91,10 @@ def play_wordlabra():
 
     def check_letters(a, g):
         # This checks the user's guess with the wordlabra answer.
-        # If the user guesses the letter in the exact spot, it will be green (and show spanish symbol if necessary)
-        # If the user guesses a letter in the wordlabra in the wrong spot, it will be yellow (provided that letter
+        # If the user guesses the letter in the exact spot, the symbol will be: *
+        # If the user guesses a letter in the wordlabra in the wrong spot, the symbol will be: ^ (provided that letter
         # has not already been guessed in correct spot, or guessed more time than it appears in the wordlabra answer)
-        # Otherwise, the letter will be white/gray
+        # Otherwise, the symbol will be: _
 
         hispanicize = {"A": "Á", "E": "É", "I": "Í", "N": "Ñ", "O": "Ó", "U": "Ú"}
         g.count = {}
@@ -120,14 +119,13 @@ def play_wordlabra():
             elif g.letters[k] not in a.letters:
                 global alphabet
                 if g.letters[k] in alphabet:
-                    alphabet[alphabet.index(g.letters[k])] = "_"
-
+                    alphabet[alphabet.index(g.letters[k])] = "_"  # This removes the absent letter from list of 
+                                                                  # possible letters user will see 
         flash("%s" % " ".join(map(str, g.letters)))
         flash("%s" % " ".join(map(str, g.symbols)))
-        flash("%s" % " ".join(map(str, alphabet[:10])))
+        flash("%s" % " ".join(map(str, alphabet[:10])))  # This displays the alphabet broken up, like US keyboard
         flash("%s" % " ".join(map(str, alphabet[10:19])))
         flash("%s" % " ".join(map(str, alphabet[19:])))
-        flash("%s" % ' '.join(map(str, a.letters)))
         return a, g
 
     def play_round(w_a, w_g):
